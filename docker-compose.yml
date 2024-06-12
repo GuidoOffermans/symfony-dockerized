@@ -1,7 +1,21 @@
 services:
-  php:
-    image: serversideup/php:8.3-fpm-nginx-alpine
-    ports:
-      - "8888:8080"
+  caddy:
+    image: caddy:latest
     volumes:
-      - .:/var/www/html/:cached
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./:/var/www/html/
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    volumes:
+      - ./:/var/www/html/
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
