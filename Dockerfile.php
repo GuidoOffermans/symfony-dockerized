@@ -17,6 +17,6 @@ COPY . .
 
 RUN composer install --prefer-dist --no-scripts --no-progress --no-interaction
 
-RUN chown -R www-data:www-data /var/www/html/var /var/www/html/public /var/www/html/vendor
+# RUN chown -R www-data:www-data /var/www/html/var /var/www/html/public /var/www/html/vendor
 
 CMD ["php-fpm"]
