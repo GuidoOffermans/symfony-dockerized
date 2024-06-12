@@ -1,4 +1,4 @@
-name: Build container
+name: Build containers
 on:
   push:
     branches: ["main"]
@@ -7,7 +7,7 @@ env:
   IMAGE_NAME: "guidooffermans/symfony-dockerized"
 
 jobs:
-  arm64:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,14 +29,24 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build image and push to registry
+      - name: Build PHP-FPM image and push to registry
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
+          file: Dockerfile.php
           platforms: linux/arm64
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-php:latest
+
+      - name: Build Caddy image and push to registry
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.caddy
+          platforms: linux/arm64
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-caddy:latest
+
       - name: Deploy to Coolify
         run: |
           curl --request GET '${{ secrets.COOLIFY_WEBHOOK }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
