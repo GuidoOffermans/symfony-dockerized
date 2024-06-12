@@ -16,6 +16,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . .
 
 RUN composer install --prefer-dist --no-scripts --no-progress --no-interaction
+RUN composer dump-autoload --optimize
 
 # RUN chown -R www-data:www-data /var/www/html/var /var/www/html/public /var/www/html/vendor
 

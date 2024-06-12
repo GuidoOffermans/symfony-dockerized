@@ -1,0 +1,14 @@
+services:
+  caddy:
+    image: ghcr.io/guidooffermans/symfony-dockerized-caddy:latest
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    depends_on:
+      - php
+
+  php:
+    image: ghcr.io/guidooffermans/symfony-dockerized-php:latest
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
