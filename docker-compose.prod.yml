@@ -3,7 +3,8 @@ services:
     image: ghcr.io/guidooffermans/symfony-dockerized-caddy:latest
     restart: unless-stopped
     ports:
-      - "8888:80"
+      - "80:80"
+      - "443:443"
     depends_on:
       - php
 
