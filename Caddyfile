@@ -1,6 +1,16 @@
 localhost:80 {
     root * /var/www/html/public
-    encode gzip
-    php_fastcgi php:9000
+
+    encode zstd gzip
     file_server
+    tls internal
+
+    php_fastcgi "127.0.0.1:9000" {
+        resolve_root_symlink
+    }
+
+    @phpFile {
+        path *.php*
+    }
+    error @phpFile "Not found" 404
 }

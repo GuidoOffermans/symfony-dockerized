@@ -1,15 +1,19 @@
 services:
-  caddy:
-    image: ghcr.io/guidooffermans/symfony-dockerized-caddy:latest
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - php
-
   php:
-    image: ghcr.io/guidooffermans/symfony-dockerized-php:latest
+    build:
+      context: .
+      dockerfile: php.Dockerfile
+    ports:
+      - "8888:80"
+    volumes:
+      - ./:/var/www/html/
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
     environment:
       - APP_ENV=${APP_ENV}
       - APP_SECRET=${APP_SECRET}
+
+volumes:
+  caddy_data:
+  caddy_config:
