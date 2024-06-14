@@ -1,7 +1,7 @@
 name: Build containers
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: "guidooffermans/symfony-dockerized"
@@ -37,15 +37,6 @@ jobs:
           platforms: linux/arm64
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-php:latest
-
-      - name: Build Caddy image and push to registry
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile.caddy
-          platforms: linux/arm64
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-caddy:latest
 
       - name: Deploy to Coolify
         run: |
