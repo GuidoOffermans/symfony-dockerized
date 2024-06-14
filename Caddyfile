@@ -1,9 +1,8 @@
-localhost:80 {
+:80 {
     root * /var/www/html/public
 
     encode zstd gzip
     file_server
-    tls internal
 
     php_fastcgi "127.0.0.1:9000" {
         resolve_root_symlink
